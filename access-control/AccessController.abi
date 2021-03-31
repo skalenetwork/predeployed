@@ -20,15 +20,9 @@
 				"type": "address"
 			}
 		],
-		"name": "isAddressWhitelisted",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
+		"name": "removeAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -39,9 +33,15 @@
 				"type": "address"
 			}
 		],
-		"name": "removeAddress",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "isAddressWhitelisted",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]
