@@ -1,6 +1,6 @@
 pragma solidity ^0.6.0;
 
-contract AccessController {
+contract DeploymentController {
 
     address owner;
     mapping(address => bool) private _whitelisted;
