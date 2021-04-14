@@ -1,14 +1,10 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DeploymentController {
+contract DeploymentController is Ownable {
 
-    address owner;
     mapping(address => bool) private _whitelisted;
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Caller is not the owner");
-        _;
-    }
 
     function addAddress(address addr) external onlyOwner {
         _whitelisted[addr] = true;
@@ -19,12 +15,6 @@ contract DeploymentController {
     }
 
     function isAddressWhitelisted(address addr) external view returns (bool) {
-        return addr == owner || isContract(addr) || _whitelisted[addr];
-    }
-
-    function isContract(address account) internal view returns (bool) {
-        uint256 size;
-        assembly { size := extcodesize(account) }
-        return size > 0;
+        return addr == owner() || Address.isContract(addr) || _whitelisted[addr];
     }
 }
