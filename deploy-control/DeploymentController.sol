@@ -3,17 +3,17 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract DeploymentController is AccessControl {
-    bytes32 public constant DEPLOYER = keccak256("DEPLOYER");
+    bytes32 public constant DEPLOYER_ROLE = keccak256("DEPLOYER_ROLE");
 
-    function addAddress(address addr) external {
-        grantRole(DEPLOYER, addr);
+    function addToWhitelist(address addr) external {
+        grantRole(DEPLOYER_ROLE, addr);
     }
 
-    function removeAddress(address addr) external {
-        revokeRole(DEPLOYER, addr);
+    function removeFromWhitelist(address addr) external {
+        revokeRole(DEPLOYER_ROLE, addr);
     }
 
     function isAddressWhitelisted(address addr) external view returns (bool) {
-        return hasRole(DEFAULT_ADMIN_ROLE, addr) || Address.isContract(addr) || hasRole(DEPLOYER, addr);
+        return hasRole(DEFAULT_ADMIN_ROLE, addr) || hasRole(DEPLOYER_ROLE, addr) || Address.isContract(addr);
     }
 }
