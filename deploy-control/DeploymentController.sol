@@ -1,20 +1,19 @@
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract DeploymentController is Ownable {
+contract DeploymentController is AccessControl {
+    bytes32 public constant DEPLOYER = keccak256("DEPLOYER");
 
-    mapping(address => bool) private _whitelisted;
-
-    function addAddress(address addr) external onlyOwner {
-        _whitelisted[addr] = true;
+    function addAddress(address addr) external {
+        grantRole(DEPLOYER, addr);
     }
 
-    function removeAddress(address addr) external onlyOwner {
-        _whitelisted[addr] = false;
+    function removeAddress(address addr) external {
+        revokeRole(DEPLOYER, addr);
     }
 
     function isAddressWhitelisted(address addr) external view returns (bool) {
-        return addr == owner() || Address.isContract(addr) || _whitelisted[addr];
+        return hasRole(DEFAULT_ADMIN_ROLE, addr) || Address.isContract(addr) || hasRole(DEPLOYER, addr);
     }
 }
